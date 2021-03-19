@@ -1,3 +1,5 @@
+import { Quote } from "./Quotes.js";
+
 class Game {
   quotes = [
     {
@@ -31,7 +33,7 @@ class Game {
       Math.floor(Math.random() * this.quotes.length)
     ];
     this.categoryWrapper.innerHTML = category;
-    this.wordWrapper.innerHTML = text;
+    this.quote = new Quote(text);
   }
 
   guess(letter) {
@@ -49,5 +51,15 @@ class Game {
   }
   start() {
     this.drawLetters();
+    const content = this.quote.getContent();
+    console.log(content);
+    this.wordWrapper.innerHTML = content;
   }
 }
+const game = new Game({
+  lettersWrapper: document.getElementById("letters"),
+  categoryWrapper: document.getElementById("category"),
+  wordWrapper: document.getElementById("word"),
+  outpuWrapper: document.getElementById("output"),
+});
+game.start();
