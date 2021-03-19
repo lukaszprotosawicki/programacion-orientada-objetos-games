@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saper-Dent</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="game">
+        <header class="header">
+            <article class="header-counter">
+                0
+            </article>
+            <button class="header-reset">Reset</button>
+            <article class="header-counter">0</article>
+        </header>
+        <article class="gameboard"></article>
+        <article class="game-panel">
+            <header class="panel-header">
+                <h1 class="panel-heading">Nivel de dificultad</h1>
+            </header>
+            <section class="panel-buttons">
+                <button class="button">Easy</button><button class="button">Normal</button><button class="button">Expert</button>
+            </section>
+        </article>
+        <article class="modal hide">
+            <section class="modal-content">
+                <h2 class="modal-text">You won!</h2>
+                <button class="modal-button">Play again</button>
+            </section>
+        </article>
+    </main>
+    <script src="./Game.js" type="model"></script>
+</body>
+</html>
