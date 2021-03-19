@@ -1,6 +1,8 @@
 import { Quote } from "./Quotes.js";
 
 class Game {
+  currentStep = 0;
+  lastStep = 7;
   quotes = [
     {
       text: "quiero ser odontologo",
@@ -36,8 +38,19 @@ class Game {
     this.quote = new Quote(text);
   }
 
-  guess(letter) {
-    console.log(letter);
+  guess(letter, event) {
+    event.target.disabled = true;
+    if (this.quote.quess(letter)) {
+      this.drawQuote();
+    } else {
+      this.currentStep++;
+      document.getElementsByClassName("step")[
+        this.currentStep
+      ].style.opacity = 1;
+      if (this.currentStep == this.lastStep) {
+        this.loosing();
+      }
+    }
   }
 
   drawLetters() {
@@ -45,15 +58,31 @@ class Game {
       const label = (i + 10).toString(36);
       const button = document.createElement("button");
       button.innerHTML = label;
-      button.addEventListener("click", () => this.guess(label));
+      button.addEventListener("click", (event) => this.guess(label, event));
       this.lettersWrapper.appendChild(button);
     }
   }
-  start() {
-    this.drawLetters();
+
+  drawQuote() {
     const content = this.quote.getContent();
-    console.log(content);
     this.wordWrapper.innerHTML = content;
+    if (!content.includes("_")) {
+      this.winning();
+    }
+  }
+  start() {
+    document.getElementsByClassName("step")[this.currentStep].style.opacity = 1;
+    this.drawLetters();
+    this.drawQuote();
+  }
+  winning() {
+    this.wordWrapper.innerHTML = "Enhorabuena! has ganado!";
+    this.lettersWrapper.innerHTML = "";
+  }
+
+  loosing() {
+    this.wordWrapper.innerHTML = "Buuu! Has perdido!!!";
+    this.lettersWrapper.innerHTML = "";
   }
 }
 const game = new Game({
