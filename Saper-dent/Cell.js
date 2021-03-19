@@ -13,7 +13,13 @@ export class Cell extends UI {
     this.element = null;
   }
   createElement() {
-    const element = `<div class="cell border border--concave" data-cell data-x="${this.x}" data-y="${this.y}"></div>`;
+    const element = `<div class="cell border border--concave cell--is-flag" data-cell data-x="${this.x}" data-y="${this.y}"></div>`;
     return element;
+  }
+
+  revealCell() {
+    this.isReveal = true;
+    this.element.classList.remove("border--concave");
+    this.element.classList.add("border--revealed");
   }
 }

@@ -25,6 +25,7 @@ class Game extends UI {
   #numberOfMines = null;
 
   #cells = [];
+  #cellsElements = null;
 
   #board = null;
 
@@ -41,13 +42,24 @@ class Game extends UI {
     this.#numberOfCols = cols;
     this.#numberOfMines = mines;
 
+    this.#setStyles();
+
     this.#generateCells();
     this.#renderBoard();
+    this.#cellsElements = this.getElements(this.UiSelectors.cell);
+    this.#addCellsEventListeners();
   }
 
   #handleElements() {
     this.#board = this.getElement(this.UiSelectors.board);
   }
+  #addCellsEventListeners() {
+    this.#cellsElements.forEach((element) => {
+      element.addEventListener("click", this.#handleCellClick);
+      element.addEventListener("contextmenu", this.#handleCellContextMenu);
+    });
+  }
+
   #generateCells() {
     this.#cells.length = 0;
     for (let row = 0; row < this.#numberOfRows; row++) {
@@ -62,6 +74,22 @@ class Game extends UI {
       this.#board.insertAdjacentHTML("beforeend", cell.createElement());
       cell.element = cell.getElement(cell.selector);
     });
+  }
+
+  #handleCellClick = (e) => {
+    const target = e.target;
+    const rowIndex = parseInt(target.getAttribute("data-y", 10));
+    const colIndex = parseInt(target.getAttribute("data-x", 10));
+    this.#cells[rowIndex][colIndex].revealCell();
+  };
+
+  #handleCellContextMenu = (e) => {};
+
+  #setStyles() {
+    document.documentElement.style.setProperty(
+      "--cells-in-row",
+      this.#numberOfCols
+    );
   }
 }
 
