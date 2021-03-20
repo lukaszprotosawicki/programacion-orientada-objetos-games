@@ -36,7 +36,7 @@ class Game extends UI {
 
   #board = null;
 
-  #butons = {
+  #buttons = {
     modal: null,
     easy: null,
     normal: null,
@@ -84,10 +84,10 @@ class Game extends UI {
 
   #handleElements() {
     this.#board = this.getElement(this.UiSelectors.board);
-    this.#buttons.modal = document.getElements(this.UiSelectors.modalButton);
-    this.#buttons.easy = document.getElements(this.UiSelectors.easylButton);
-    this.#buttons.normal = document.getElements(this.UiSelectors.normalButton);
-    this.#buttons.expert = document.getElements(this.UiSelectors.expertButton);
+    this.#buttons.modal = this.getElement(this.UiSelectors.modalButton);
+    this.#buttons.easy = this.getElement(this.UiSelectors.easyButton);
+    this.#buttons.normal = this.getElement(this.UiSelectors.normalButton);
+    this.#buttons.expert = this.getElement(this.UiSelectors.expertButton);
   }
   #addCellsEventListeners() {
     this.#cellsElements.forEach((element) => {
@@ -118,6 +118,9 @@ class Game extends UI {
         this.#config.expert.mines
       )
     );
+    this.#buttons.reset.element.addEventListener("click", () =>
+      this.#handleNewGameClick()
+    );
   }
 
   #handleNewGameClick(
@@ -125,9 +128,8 @@ class Game extends UI {
     cols = this.#numberOfCols,
     mines = this.#numberOfMines
   ) {
-    this.#newgame(rows, cols, mines);
+    this.#newGame(rows, cols, mines);
   }
-
   #generateCells() {
     this.#cells.length = 0;
     for (let row = 0; row < this.#numberOfRows; row++) {
@@ -138,6 +140,9 @@ class Game extends UI {
     }
   }
   #renderBoard() {
+    while (this.#board.firstChild) {
+      this.#board.removeChild(this.#board.lastChild);
+    }
     this.#cells.flat().forEach((cell) => {
       this.#board.insertAdjacentHTML("beforeend", cell.createElement());
       cell.element = cell.getElement(cell.selector);
