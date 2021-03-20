@@ -179,7 +179,7 @@ html {
 }
 
 .cell--is-mine {
-  background-image: url("./assets/bomb.svg");
+  background-image: url("./images/bomb.png");
   background-color: var(--alarm-color);
 }
 
