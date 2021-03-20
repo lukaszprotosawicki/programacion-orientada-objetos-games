@@ -3,6 +3,7 @@ import { UI } from "./UI.js";
 import { Counter } from "./Counter.js";
 import { Timer } from "./Timer.js";
 import { ResetButton } from "./ResetButton.js";
+import { Modal } from "./Modal.js";
 
 class Game extends UI {
   #config = {
@@ -25,6 +26,7 @@ class Game extends UI {
 
   #counter = new Counter();
   #timer = new Timer();
+  #modal = new Modal();
 
   #isGameFinished = false;
   #numberOfRows = null;
@@ -33,6 +35,8 @@ class Game extends UI {
 
   #cells = [];
   #cellsElements = null;
+  #cellsToReveal = 0;
+  #revealedCells = 0;
 
   #board = null;
 
@@ -63,6 +67,9 @@ class Game extends UI {
     this.#counter.setValue(this.#numberOfMines);
     this.#timer.resetTimer();
 
+    this.#cellsToReveal =
+      this.#numberOfCols * this.#numberOfRows - this.#numberOfMines;
+
     this.#setStyles();
 
     this.#generateCells();
@@ -70,16 +77,39 @@ class Game extends UI {
     this.#placeMinesInCells();
 
     this.#cellsElements = this.getElements(this.UiSelectors.cell);
+
+    this.#buttons.reset.changeEmotion("neutral");
+
+    this.#isGameFinished = false;
+    this.#revealedCells = 0;
+
     this.#addCellsEventListeners();
   }
 
   #endGame(isWin) {
     this.#isGameFinished = true;
     this.#timer.stopTimer();
+    this.#modal.buttonText = "Close";
 
     if (!isWin) {
       this.#revealMines();
+      this.#modal.infoText =
+        "Has perdido, tienes algunos dientes podridos, intentalo de nuevo o vente a nuestra clinica Familydent !";
+      this.#buttons.reset.changeEmotion("negative");
+      this.#modal.setText();
+      this.#modal.toggleModal();
+      return;
     }
+
+    this.#modal.infoText =
+      this.#timer.numberOfSeconds < this.#timer.maxNumberOfSeconds
+        ? `Has ganado, lo has conseguido en ${
+            this.#timer.numberOfSeconds
+          } segundos! Enhorabuena! tienes una sonrisa sana y maravillosa!`
+        : "Has ganado";
+    this.#buttons.reset.changeEmotion("positive");
+    this.#modal.setText();
+    this.#modal.toggleModal();
   }
 
   #handleElements() {
@@ -104,6 +134,7 @@ class Game extends UI {
   }
 
   #addButtonsEventListeners() {
+    this.#buttons.modal.addEventListener("click", this.#modal.toggleModal);
     this.#buttons.easy.addEventListener("click", () =>
       this.#handleNewGameClick(
         this.#config.easy.rows,
@@ -213,6 +244,10 @@ class Game extends UI {
       this.#endGame(false);
     }
     this.#setCellValue(cell);
+
+    if (this.#revealedCells === this.#cellsToReveal && !this.#isGameFinished) {
+      this.#endGame(true);
+    }
   }
 
   #revealMines() {
@@ -239,6 +274,7 @@ class Game extends UI {
     }
     cell.value = minesCount;
     cell.revealCell();
+    this.#revealedCells++;
 
     if (!cell.value) {
       for (
