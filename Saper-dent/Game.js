@@ -61,7 +61,7 @@ class Game extends UI {
     this.#numberOfMines = mines;
 
     this.#counter.setValue(this.#numberOfMines);
-    this.#timer.startTimer();
+    this.#timer.resetTimer();
 
     this.#setStyles();
 
@@ -93,6 +93,13 @@ class Game extends UI {
     this.#cellsElements.forEach((element) => {
       element.addEventListener("click", this.#handleCellClick);
       element.addEventListener("contextmenu", this.#handleCellContextMenu);
+    });
+  }
+
+  #removeCellsEventListeners() {
+    this.#cellsElements.forEach((element) => {
+      element.removeEventListener("click", this.#handleCellClick);
+      element.removeEventListener("contextmenu", this.#handleCellContextMenu);
     });
   }
 
@@ -128,6 +135,7 @@ class Game extends UI {
     cols = this.#numberOfCols,
     mines = this.#numberOfMines
   ) {
+    this.#removeCellsEventListeners();
     this.#newGame(rows, cols, mines);
   }
   #generateCells() {
