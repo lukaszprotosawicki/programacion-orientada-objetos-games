@@ -39,6 +39,7 @@
 body {
   font-family: "Lato", sans-serif;
   box-sizing: border-box;
+  background-color: rgb(123, 184, 219);
 }
 
 html {
