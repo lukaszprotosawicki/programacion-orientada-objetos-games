@@ -25,6 +25,7 @@ class Game extends UI {
   #counter = new Counter();
   #timer = new Timer();
 
+  #isGameFinished = false;
   #numberOfRows = null;
   #numberOfCols = null;
   #numberOfMines = null;
@@ -60,6 +61,15 @@ class Game extends UI {
 
     this.#cellsElements = this.getElements(this.UiSelectors.cell);
     this.#addCellsEventListeners();
+  }
+
+  #endGame(isWin) {
+    this.#isGameFinished = true;
+    this.#timer.stopTimer();
+
+    if (!isWin) {
+      this.#revealMines();
+    }
   }
 
   #handleElements() {
@@ -137,9 +147,16 @@ class Game extends UI {
 
   #clickCell(cell) {
     if (cell.isMine) {
-      return;
+      this.#endGame(false);
     }
     cell.revealCell();
+  }
+
+  #revealMines() {
+    this.#cells
+      .flat()
+      .filter(({ isMine }) => isMine)
+      .forEach((cell) => cell.revealCell());
   }
 
   #setStyles() {
