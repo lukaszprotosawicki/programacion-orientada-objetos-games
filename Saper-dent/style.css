@@ -175,7 +175,7 @@ html {
 }
 
 .cell--is-flag {
-  background-image: url("./assets/flag.svg");
+  background-image: url("./assets/flag-dent.svg");
 }
 
 .cell--is-mine {
