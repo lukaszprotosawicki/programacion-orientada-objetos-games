@@ -1,4 +1,4 @@
-import { UI } from "./UI";
+import { UI } from "./UI.js";
 
 export class Counter extends UI {
   value = null;
@@ -17,7 +17,6 @@ export class Counter extends UI {
     this.value++;
     this.#updateValue();
   }
-
   decrement() {
     this.value--;
     this.#updateValue();
