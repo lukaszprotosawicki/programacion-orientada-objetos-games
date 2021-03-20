@@ -165,7 +165,7 @@ html {
   width: var(--cell-size);
   height: var(--cell-size);
   cursor: pointer;
-  background-size: 3.5rem;
+  background-size: 3rem;
   background-position: center;
   background-repeat: no-repeat;
   font-size: 2.4rem;
@@ -180,6 +180,7 @@ html {
 
 .cell--is-mine {
   background-image: url("./images/bomb.png");
+  background-size: 34px;
   background-color: var(--alarm-color);
 }
 

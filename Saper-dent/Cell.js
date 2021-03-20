@@ -12,8 +12,9 @@ export class Cell extends UI {
     this.selector = `[data-x="${this.x}"][data-y="${this.y}"]`;
     this.element = null;
   }
+
   createElement() {
-    const element = `<div class="cell border border--concave " data-cell data-x="${this.x}" data-y="${this.y}"></div>`;
+    const element = `<div class="cell border border--concave" data-cell data-x="${this.x}" data-y="${this.y}"></div>`;
     return element;
   }
 
@@ -29,6 +30,11 @@ export class Cell extends UI {
 
     if (this.isMine) {
       this.element.classList.add("cell--is-mine");
+      return;
+    }
+    if (this.value) {
+      this.element.textContent = this.value;
+      this.element.classList.add(`cell-info-${this.value}`);
     }
   }
 

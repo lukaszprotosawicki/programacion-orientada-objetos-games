@@ -57,7 +57,7 @@ class Game extends UI {
 
     this.#generateCells();
     this.#renderBoard();
-    this.#placeMinesCells();
+    this.#placeMinesInCells();
 
     this.#cellsElements = this.getElements(this.UiSelectors.cell);
     this.#addCellsEventListeners();
@@ -98,8 +98,9 @@ class Game extends UI {
     });
   }
 
-  #placeMinesCells() {
+  #placeMinesInCells() {
     let minesToPlace = this.#numberOfMines;
+
     while (minesToPlace) {
       const rowIndex = this.#getRandomInteger(0, this.#numberOfRows - 1);
       const colIndex = this.#getRandomInteger(0, this.#numberOfCols - 1);
@@ -117,8 +118,9 @@ class Game extends UI {
 
   #handleCellClick = (e) => {
     const target = e.target;
-    const rowIndex = parseInt(target.getAttribute("data-y", 10));
-    const colIndex = parseInt(target.getAttribute("data-x", 10));
+    const rowIndex = parseInt(target.getAttribute("data-y"), 10);
+    const colIndex = parseInt(target.getAttribute("data-x"), 10);
+
     const cell = this.#cells[rowIndex][colIndex];
 
     this.#clickCell(cell);
@@ -127,11 +129,12 @@ class Game extends UI {
   #handleCellContextMenu = (e) => {
     e.preventDefault();
     const target = e.target;
-    const rowIndex = parseInt(target.getAttribute("data-y", 10));
-    const colIndex = parseInt(target.getAttribute("data-x", 10));
+    const rowIndex = parseInt(target.getAttribute("data-y"), 10);
+    const colIndex = parseInt(target.getAttribute("data-x"), 10);
 
     const cell = this.#cells[rowIndex][colIndex];
-    if (cell.isReveal) return;
+
+    if (cell.isReveal || this.#isGameFinished) return;
 
     if (cell.isFlagged) {
       this.#counter.increment();
@@ -146,10 +149,11 @@ class Game extends UI {
   };
 
   #clickCell(cell) {
+    if (this.#isGameFinished || cell.isFlagged) return;
     if (cell.isMine) {
       this.#endGame(false);
     }
-    cell.revealCell();
+    this.#setCellValue(cell);
   }
 
   #revealMines() {
@@ -157,6 +161,42 @@ class Game extends UI {
       .flat()
       .filter(({ isMine }) => isMine)
       .forEach((cell) => cell.revealCell());
+  }
+
+  #setCellValue(cell) {
+    let minesCount = 0;
+    for (
+      let rowIndex = Math.max(cell.y - 1, 0);
+      rowIndex <= Math.min(cell.y + 1, this.#numberOfRows - 1);
+      rowIndex++
+    ) {
+      for (
+        let colIndex = Math.max(cell.x - 1, 0);
+        colIndex <= Math.min(cell.x + 1, this.#numberOfCols - 1);
+        colIndex++
+      ) {
+        if (this.#cells[rowIndex][colIndex].isMine) minesCount++;
+      }
+    }
+    cell.value = minesCount;
+    cell.revealCell();
+
+    if (!cell.value) {
+      for (
+        let rowIndex = Math.max(cell.y - 1, 0);
+        rowIndex <= Math.min(cell.y + 1, this.#numberOfRows - 1);
+        rowIndex++
+      ) {
+        for (
+          let colIndex = Math.max(cell.x - 1, 0);
+          colIndex <= Math.min(cell.x + 1, this.#numberOfCols - 1);
+          colIndex++
+        ) {
+          const cell = this.#cells[rowIndex][colIndex];
+          if (!cell.isReveal) this.#clickCell(cell);
+        }
+      }
+    }
   }
 
   #setStyles() {
