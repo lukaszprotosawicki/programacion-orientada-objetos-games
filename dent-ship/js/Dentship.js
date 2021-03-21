@@ -2,7 +2,7 @@ import { Missile } from "./Missile.js";
 
 export class Dentship {
   missiles = [];
-  #modifier = 3;
+  #modifier = 5;
   #leftArrow = false;
   #rightArrow = false;
   constructor(element, container) {

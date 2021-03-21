@@ -101,12 +101,18 @@ class Game {
 
   #updateScore() {
     this.#score++;
+    if (!(this.#score % 5)) {
+      this.#enemiesInterval--;
+    }
+
     this.#updateScoreText();
   }
 
   #updateLives() {
     this.#lives--;
     this.#updateLivesText();
+    this.#htmlElements.container.classList.add("hit");
+    setTimeout(() => this.#htmlElements.container.classList.remove("hit"), 100);
   }
 
   #updateScoreText() {

@@ -1,5 +1,6 @@
 :root {
   --primary-color: rgb(30, 140, 160);
+  --secondary-color: rgb(114, 26, 26);
   --size-unit: 64px;
   --animation-time: 300ms;
   --explosions-animation-time: 600ms;
@@ -153,4 +154,8 @@ body {
 
 .hide {
   display: none;
+}
+
+.hit {
+  background-color: var(--secondary-color);
 }
