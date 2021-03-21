@@ -1,8 +1,9 @@
 export class Enemy {
-  constructor(container, intervalTime, enemyClass, lives = 1) {
+  constructor(container, intervalTime, enemyClass, explosionClass, lives = 1) {
     this.container = container;
     this.element = document.createElement("div");
     this.enemyClass = enemyClass;
+    this.explosionClass = explosionClass;
     this.interval = null;
     this.intervalTime = intervalTime;
     this.lives = lives;
