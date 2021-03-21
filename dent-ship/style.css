@@ -116,6 +116,7 @@ body {
   width: 12px;
   height: 24px;
   background-image: url("./images/missile.png");
+  position: absolute;
 }
 
 @keyframes move {

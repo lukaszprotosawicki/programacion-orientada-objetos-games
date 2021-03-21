@@ -1,22 +1,25 @@
+import { Missile } from "./Missile.js";
+
 export class Dentship {
-  #modifier = 5;
+  missiles = [];
+  #modifier = 10;
   #leftArrow = false;
   #rightArrow = false;
-  constructor(element) {
+  constructor(element, container) {
     this.element = element;
+    this.container = container;
   }
   init() {
-    this.#setPosition();
+    this.setPosition();
     this.#eventListeners();
     this.#gameLoop();
   }
-  #setPosition() {
+  setPosition() {
     this.element.style.bottom = "0px";
     this.element.style.left = `${
       window.innerWidth / 2 - this.#getPosition()
     }px`;
   }
-
   #getPosition() {
     return this.element.offsetLeft + this.element.offsetWidth / 2;
   }
@@ -33,6 +36,9 @@ export class Dentship {
     });
     window.addEventListener("keyup", ({ keyCode }) => {
       switch (keyCode) {
+        case 32:
+          this.#shot();
+          break;
         case 37:
           this.#leftArrow = false;
           break;
@@ -57,5 +63,14 @@ export class Dentship {
         parseInt(this.element.style.left, 10) + this.#modifier
       }px`;
     }
+  }
+  #shot() {
+    const missile = new Missile(
+      this.#getPosition(),
+      this.element.offsetTop,
+      this.container
+    );
+    missile.init();
+    this.missiles.push(missile);
   }
 }
