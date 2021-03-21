@@ -29,7 +29,7 @@ class Game {
   }
   #newGame() {
     this.#htmlElements.modal.classList.add("hide");
-    this.#enemiesInterval = 20;
+    this.#enemiesInterval = 30;
     this.#lives = 3;
     this.#score = 0;
     this.#updateLivesText();
@@ -39,7 +39,6 @@ class Game {
     this.#createEnemyInterval = setInterval(() => this.#randomNewEnemy(), 1000);
     this.#checkPositionInterval = setInterval(() => this.#checkPosition(), 1);
   }
-
   #endGame() {
     this.#htmlElements.modal.classList.remove("hide");
     this.#htmlElements.scoreInfo.textContent = `Has perdido! Puntos: ${
@@ -106,7 +105,6 @@ class Game {
           if (!enemy.lives) {
             enemiesArr.splice(enemyIndex, 1);
           }
-
           missile.remove();
           missileArr.splice(missileIndex, 1);
           this.#updateScore();
