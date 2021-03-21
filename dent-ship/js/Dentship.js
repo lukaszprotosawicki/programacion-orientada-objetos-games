@@ -15,7 +15,7 @@ export class Dentship {
     this.#gameLoop();
   }
   setPosition() {
-    this.element.style.bottom = "0px";
+    this.element.style.bottom = "1px";
     this.element.style.left = `${
       window.innerWidth / 2 - this.#getPosition()
     }px`;
