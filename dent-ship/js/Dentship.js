@@ -2,7 +2,7 @@ import { Missile } from "./Missile.js";
 
 export class Dentship {
   missiles = [];
-  #modifier = 5;
+  #modifier = 10;
   #leftArrow = false;
   #rightArrow = false;
   constructor(element, container) {
@@ -53,12 +53,12 @@ export class Dentship {
     requestAnimationFrame(this.#gameLoop);
   };
   #whatKey() {
-    if (this.#leftArrow && this.#getPosition() > 40) {
+    if (this.#leftArrow && this.#getPosition() > 12) {
       this.element.style.left = `${
         parseInt(this.element.style.left, 10) - this.#modifier
       }px`;
     }
-    if (this.#rightArrow && this.#getPosition() + 40 < window.innerWidth) {
+    if (this.#rightArrow && this.#getPosition() + 12 < window.innerWidth) {
       this.element.style.left = `${
         parseInt(this.element.style.left, 10) + this.#modifier
       }px`;
