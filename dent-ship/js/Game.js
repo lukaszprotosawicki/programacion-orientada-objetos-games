@@ -11,6 +11,7 @@ class Game {
     this.#htmlElements.container
   );
   #enemies = [];
+  #enemiesInterval = null;
   #checkPositionInterval = null;
   #createEnemyInterval = null;
 
@@ -19,27 +20,44 @@ class Game {
     this.#newGame();
   }
   #newGame() {
-    this.#createEnemyInterval = setInterval(() => this.#createNewEnemy(), 1000);
+    this.#enemiesInterval = 20;
+    this.#createEnemyInterval = setInterval(() => this.#randomNewEnemy(), 1000);
     this.#checkPositionInterval = setInterval(() => this.#checkPosition(), 1);
   }
 
-  #createNewEnemy() {
-    const enemy = new Enemy(this.#htmlElements.container, "enemy");
+  #randomNewEnemy() {
+    const randomNumber = Math.floor(Math.random() * 5) + 1;
+    randomNumber % 5
+      ? this.#createNewEnemy(
+          this.#htmlElements.container,
+          this.#enemiesInterval,
+          "enemy"
+        )
+      : this.#createNewEnemy(
+          this.#htmlElements.container,
+          this.#enemiesInterval * 2,
+          "enemy--big",
+          3
+        );
+  }
+
+  #createNewEnemy(...params) {
+    const enemy = new Enemy(...params);
     enemy.init();
     this.#enemies.push(enemy);
   }
 
   #checkPosition() {
-    this.#ship.missiles.forEach((missile, missileIndex, missileArr) => {
-      const missilePosition = {
-        top: missile.element.offsetTop,
-        right: missile.element.offsetLeft + missile.element.offsetWidth,
-        bottom: missile.element.offsetTop + missile.element.offsetHeight,
-        left: missile.element.offsetLeft,
+    this.#enemies.forEach((enemy, enemyIndex, enemiesArr) => {
+      const enemyPosition = {
+        top: enemy.element.offsetTop,
+        right: enemy.element.offsetLeft + enemy.element.offsetWidth,
+        bottom: enemy.element.offsetTop + enemy.element.offsetHeight,
+        left: enemy.element.offsetLeft,
       };
-      if (missilePosition.bottom < 0) {
-        missile.remove();
-        missileArr.splice(missileIndex, 1);
+      if (enemyPosition.top > window.innerHeight) {
+        enemy.remove();
+        enemiesArr.splice(enemyIndex, 1);
       }
     });
   }

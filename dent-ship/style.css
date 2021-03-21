@@ -89,12 +89,15 @@ body {
   width: var(--size-unit);
   height: var(--size-unit);
   background-image: url("./images/enemy-teeth.png");
+  position: fixed;
+  z-index: 1;
 }
 
 .enemy--big {
   width: calc(var(--size-unit) * 1.9);
   height: calc(var(--size-unit) * 2);
   background-image: url("./images/enemy-big-teeth.png");
+  position: fixed;
 }
 
 .explosion {
