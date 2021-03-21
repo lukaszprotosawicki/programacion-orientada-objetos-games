@@ -5,12 +5,16 @@ class Game {
   #htmlElements = {
     spaceship: document.querySelector("[data-spaceship"),
     container: document.querySelector("[data-container"),
+    score: document.querySelector("[data-score"),
+    lives: document.querySelector("[data-lives"),
   };
   #ship = new Dentship(
     this.#htmlElements.spaceship,
     this.#htmlElements.container
   );
   #enemies = [];
+  #lives = null;
+  #score = null;
   #enemiesInterval = null;
   #checkPositionInterval = null;
   #createEnemyInterval = null;
@@ -21,6 +25,8 @@ class Game {
   }
   #newGame() {
     this.#enemiesInterval = 20;
+    this.#lives = 3;
+    this.#score = 0;
     this.#createEnemyInterval = setInterval(() => this.#randomNewEnemy(), 1000);
     this.#checkPositionInterval = setInterval(() => this.#checkPosition(), 1);
   }
@@ -58,8 +64,9 @@ class Game {
         left: enemy.element.offsetLeft,
       };
       if (enemyPosition.top > window.innerHeight) {
-        enemy.remove();
+        enemy.explode();
         enemiesArr.splice(enemyIndex, 1);
+        this.#updateLives();
       }
 
       this.#ship.missiles.forEach((missile, missileIndex, missileArr) => {
@@ -75,9 +82,14 @@ class Game {
           missilePosition.right >= enemyPosition.left &&
           missilePosition.left <= enemyPosition.right
         ) {
-          enemy.remove();
+          enemy.hit();
+          if (!enemy.lives) {
+            enemiesArr.splice(enemyIndex, 1);
+          }
+
           missile.remove();
           missileArr.splice(missileIndex, 1);
+          this.#updateScore();
         }
         if (missilePosition.bottom < 0) {
           missile.remove();
@@ -85,6 +97,23 @@ class Game {
         }
       });
     });
+  }
+
+  #updateScore() {
+    this.#score++;
+    this.#updateScoreText();
+  }
+
+  #updateLives() {
+    this.#lives--;
+    this.#updateLivesText();
+  }
+
+  #updateScoreText() {
+    this.#htmlElements.score.textContent = `Puntos: ${this.#score} `;
+  }
+  #updateLivesText() {
+    this.#htmlElements.lives.textContent = `Vidas: ${this.#lives} `;
   }
 }
 

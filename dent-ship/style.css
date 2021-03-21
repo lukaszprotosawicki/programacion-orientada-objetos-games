@@ -2,6 +2,7 @@
   --primary-color: rgb(30, 140, 160);
   --size-unit: 64px;
   --animation-time: 300ms;
+  --explosions-animation-time: 600ms;
 }
 
 *,
@@ -104,7 +105,7 @@ body {
   width: var(--size-unit);
   height: var(--size-unit);
   background-image: url("./images/explosion.png");
-  animation: move-17 600ms steps(17) forwards;
+  animation: move-17 var(--explosions-animation-time) steps(17) forwards;
   position: fixed;
 }
 
@@ -112,7 +113,7 @@ body {
   width: calc(var(--size-unit) * 2);
   height: calc(var(--size-unit) * 2);
   background-image: url("./images/explosion-big.png");
-  animation: move-34 600ms steps(17) forwards;
+  animation: move-34 var(--explosions-animation-time) steps(17) forwards;
   position: fixed;
 }
 .missile {
