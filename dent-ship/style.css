@@ -84,7 +84,7 @@ body {
   height: 160px;
   background-image: url("./images/css_sprites.png");
   animation: move 1000ms steps(7) infinite;
-  position: fixed;
+  position: absolute;
 }
 
 .enemy {
